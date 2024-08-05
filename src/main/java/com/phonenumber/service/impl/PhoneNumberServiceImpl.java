@@ -61,12 +61,10 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     @Override
     public ResponseModel getAvailablePhoneNumbersByDigit(String digit) {
 
-        List<PhoneNumberModel> availablePhoneNumbers = findAvailablePhoneNumbers();
-
         List<PhoneNumberModel> phoneNumbersByDigit;
 
         for (int i = 0; i <= digit.length(); i++) {
-            phoneNumbersByDigit = findPhoneNumbersByDigit(availablePhoneNumbers, digit);
+            phoneNumbersByDigit = findPhoneNumbersByDigit(digit);
             if (!phoneNumbersByDigit.isEmpty()) {
 
                 updateStatus(phoneNumbersByDigit, PhoneNumberStatusConstants.LOCKED);
@@ -120,8 +118,6 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     }
 
 
-
-
     private void updateStatus(List<PhoneNumberModel> phoneNumbers, PhoneNumberStatusConstants phoneNumberStatusConstants) {
 
         phoneNumbers.forEach(phoneNumber -> {
@@ -140,13 +136,13 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         return mongoTemplate.find(query, PhoneNumberModel.class);
     }
 
-    private List<PhoneNumberModel> findPhoneNumbersByDigit(List<PhoneNumberModel> phoneNumbers, String digit) {
+    private List<PhoneNumberModel> findPhoneNumbersByDigit(String digit) {
 
-        phoneNumbers = phoneNumbers.stream()
-                .filter(phoneNumber -> phoneNumber.getPhoneNumber().endsWith(digit))
-                .toList();
-
-        return phoneNumbers;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("status").is("Available")
+                .and("phoneNumber").regex(digit + "$"));
+        query.limit(4);
+        return mongoTemplate.find(query, PhoneNumberModel.class);
     }
 
 
