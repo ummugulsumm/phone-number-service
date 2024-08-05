@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmation</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
+</head>
+<body>
+<div class="container">
+    <form action="/phone-numbers/confirm" method="post">
+        <input type="hidden" id="phoneNumberId" name="phoneNumberId" value="" />
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required />
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required />
+        </div>
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required />
+        </div>
+        <div class="form-group">
+            <label for="contactPhoneNumber">Contact Phone Number:</label>
+            <input type="text" id="contactPhoneNumber" name="contactPhoneNumber" required />
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const phoneNumberId = urlParams.get('phoneNumberId');
+    document.getElementById('phoneNumberId').value = phoneNumberId;
+</script>
+</body>
+</html>

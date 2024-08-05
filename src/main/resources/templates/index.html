@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Phone Number Search</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <script defer src="/script.js"></script>
+</head>
+<body>
+
+<form onsubmit="searchPhoneNumbers(event)">
+    <div class="container">
+        <p>You can search up to 7 digits to find the number you want.</p>
+        <div class="search-box">
+            <input type="text" id="digit" name="digit" placeholder="Enter digit"/>
+            <button type="submit">Search</button>
+        </div>
+    </div>
+</form>
+
+<div id="results-container" class="results-container" style="display: none;">
+    <ul id="results">
+    </ul>
+    <div class="continue-container" id="continue-container"></div>
+</div>
+
+</body>
+</html>
