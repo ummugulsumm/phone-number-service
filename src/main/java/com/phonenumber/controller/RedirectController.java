@@ -2,14 +2,24 @@ package com.phonenumber.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
 public class RedirectController {
 
-    @GetMapping("/confirm")
-    public String showConfirmPage(@RequestParam(name = "phoneNumberId", required = false) String phoneNumberId) {
+    @GetMapping("phone-numbers/confirm/{phoneNumberId}")
+    public String showConfirmPage() {
         return "confirm";
     }
+    @GetMapping("phone-numbers/candidate/{phoneNumberId}")
+    public String showCandidatePage() {
+        return "candidate";
+    }
+    @GetMapping("phone-numbers/delivery/{phoneNumberId}")
+    public String showDeliveryPage() {
+        return "delivery";
+    }
+
+
 }

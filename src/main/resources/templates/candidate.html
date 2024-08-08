@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmation</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
+</head>
+<body>
+<div class="container">
+    <form id="candidateForm" action="/phone-numbers/confirm" method="post">
+        <input type="hidden" id="phoneNumberId" name="phoneNumberId" value="" />
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required />
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required />
+        </div>
+        <div class="form-group">
+        <label for="tcNo">TC:</label>
+        <input type="text" id="tcNo" name="tcNo" required />
+        </div>
+        <div class="form-group">
+            <label for="birthDate">Birthdate:</label>
+            <input type="date" id="birthDate" name="birthDate" required />
+        </div>
+        <div class="form-group">
+            <label for="motherName">Mother Name:</label>
+            <input type="text" id="motherName" name="motherName" required />
+        </div>
+        <div class="form-group">
+            <label for="fatherName">Father Name:</label>
+            <input type="text" id="fatherName" name="fatherName" required />
+        </div>
+        <button type="submit">Continue</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('candidateForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const motherName = document.getElementById('motherName').value;
+    const fatherName = document.getElementById('fatherName').value;
+    const tcNo = document.getElementById('tcNo').value;
+    const birthDate = document.getElementById('birthDate').value;
+    const pathParts = window.location.pathname.split('/');
+    const phoneNumberId = pathParts[pathParts.length - 1];
+    if (phoneNumberId) {
+        try {
+            const response = await fetch(`/phone-numbers/candidate/${phoneNumberId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    motherName: motherName,
+                    fatherName: fatherName,
+                    tcNo: tcNo,
+                    birthDate: birthDate
+                })
+            });
+
+            if (response.ok) {
+                window.location.href = `/phone-numbers/delivery/${phoneNumberId}`;
+            } else {
+                alert("Failed to hold the phone number.");
+            }
+        } catch (error) {
+            alert("An error occurred: " + error.message);
+        }
+    } else {
+        alert("Phone number ID is missing.");
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Option</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+<div class="container">
+    <h2>Choose Delivery Option</h2>
+    <form id="deliveryForm">
+        <div class="form-group">
+            <input type="radio" id="homeDelivery" name="deliveryOption" value="home" required>
+            <label for="homeDelivery">Deliver to my address</label>
+        </div>
+        <div class="form-group">
+            <input type="radio" id="storePickup" name="deliveryOption" value="store" required>
+            <label for="storePickup">I will pick it up from the store</label>
+        </div>
+        <button type="submit">Complete</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('deliveryForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const deliveryOption = document.querySelector('input[name="deliveryOption"]:checked').value;
+
+        alert(`You have chosen: ${deliveryOption === 'home' ? 'Deliver to my address' : 'I will pick it up from the store'}`);
+
+        // Perform any necessary actions or redirections here
+        window.location.href = '/success'; // Redirect to a success page or perform further actions
+    });
+</script>
+</body>
+</html>

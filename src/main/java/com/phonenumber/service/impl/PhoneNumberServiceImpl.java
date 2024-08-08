@@ -13,11 +13,14 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.OK;
 
 
 @Service
@@ -82,14 +85,6 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         throw new PhoneNumberNotFoundException();
     }
 
-    @Override
-    public void updateStatusHold(String phoneNumberId) {
-        PhoneNumberModel phoneNumber = phoneNumberRepository.findById(phoneNumberId)
-                .orElseThrow(PhoneNumberNotFoundException::new);
-        phoneNumber.setStatus(PhoneNumberStatusConstants.HOLD.getStatus());
-        phoneNumber.setUpdateDate(new Date());
-        phoneNumberRepository.save(phoneNumber);
-    }
 
     @Override
     public void updateStatusSold(String phoneNumberId) {
@@ -98,6 +93,17 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         phoneNumber.setStatus(PhoneNumberStatusConstants.SOLD.getStatus());
         phoneNumber.setUpdateDate(new Date());
         phoneNumberRepository.save(phoneNumber);
+    }
+
+    @Override
+    public ResponseEntity<Void> addContactPhoneNumber(String phoneNumberId, String contactPhoneNumber) {
+        PhoneNumberModel phoneNumber = phoneNumberRepository.findById(phoneNumberId)
+                .orElseThrow(PhoneNumberNotFoundException::new);
+        phoneNumber.setContactPhoneNumber(contactPhoneNumber);
+        phoneNumber.setStatus(PhoneNumberStatusConstants.HOLD.getStatus());
+        phoneNumber.setUpdateDate(new Date());
+        phoneNumberRepository.save(phoneNumber);
+        return new ResponseEntity<>(OK);
     }
 
 
