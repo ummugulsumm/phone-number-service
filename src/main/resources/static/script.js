@@ -41,7 +41,7 @@ function formatPhoneNumber(phoneNumber) {
                 continueButton.textContent = "Continue";
                 continueButton.addEventListener('click', function() {
                     if (selectedPhoneNumberId) {
-                        holdPhoneNumber(selectedPhoneNumberId);
+                        redirectToConfirmPage(selectedPhoneNumberId);
                     } else {
                         alert("Please select a phone number.");
                     }
@@ -58,8 +58,12 @@ function formatPhoneNumber(phoneNumber) {
             }
         }
 
-        async function holdPhoneNumber(phoneNumberId) {
-            const response = await fetch('/phone-numbers/hold', {
+        function redirectToConfirmPage(phoneNumberId) {
+            window.location.href = `phone-numbers/confirm/${phoneNumberId}`;
+        }
+
+   /*     async function holdPhoneNumber(phoneNumberId) {
+            const response = await fetch('phone-numbers/confirm/{phoneNumberId}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -68,8 +72,9 @@ function formatPhoneNumber(phoneNumber) {
             });
 
             if (response.ok) {
-                window.location.href = `/confirm.html?phoneNumberId=${phoneNumberId}`;
+                window.location.href = `phone-numbers/confirm/${phoneNumberId}`;
             } else {
                 alert("Failed to hold the phone number.");
             }
         }
+        */

@@ -21,4 +21,11 @@ public class PhoneNumberModel {
     private String status = PhoneNumberStatusConstants.AVAILABLE.getStatus();
 
     private Date updateDate = new Date();
+
+    private String specialPhoneNumberType;
+
+    private int specialPhoneNumberPrice;
+
+    private String contactPhoneNumber;
+
 }

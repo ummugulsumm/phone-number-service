@@ -3,6 +3,7 @@ package com.phonenumber.scheduler;
 import com.phonenumber.constant.PhoneNumberStatusConstants;
 import com.phonenumber.model.PhoneNumberModel;
 import com.phonenumber.repository.PhoneNumberRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,12 +11,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Service
+@Slf4j
 public class PhoneNumberReleaseScheduler {
 
-    private static final Logger logger = Logger.getLogger(PhoneNumberReleaseScheduler.class.getName());
+
 
     @Autowired
     private PhoneNumberRepository phoneNumberRepository;
@@ -33,8 +35,7 @@ public class PhoneNumberReleaseScheduler {
             phoneNumberRepository.save(phoneNumber);
         });
 
-        String message = "Released phone numbers:" + holdPhoneNumbers.size();
-        logger.info(message);
+        log.info("Released phone numbers:" + holdPhoneNumbers.size());
 
     }
 

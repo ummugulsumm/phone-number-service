@@ -18,9 +18,12 @@ public class CandidateModel {
     private String phoneNumberId;
     private String firstName;
     private String lastName;
+    private String motherName;
+    private String fatherName;
+    private String tcNo;
+    private String birthdate;
     private String address;
-    private String contactPhoneNumber;
+    private String deliveryType;
     private Date updateDate = new Date();
-
 
 }
