@@ -21,5 +21,10 @@ public class RedirectController {
         return "delivery";
     }
 
+    @GetMapping("phone-numbers/success")
+    public String showSuccessPage() {
+        return "success";
+    }
+
 
 }
