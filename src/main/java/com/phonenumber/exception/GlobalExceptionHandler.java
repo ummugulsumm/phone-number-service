@@ -16,7 +16,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PhoneNumberNotFoundException.class)
     public ResponseEntity<ResponseModel> handlePhoneNumberNotFoundException() {
-        ResultModel result = new ResultModel(PhoneNumberResultConstants.FAILED_RESULT.getResult(), String.valueOf(HttpStatus.NOT_FOUND.value()), PhoneNumberResultConstants.NOT_FOUND_MESSAGE.getResult());
+        ResultModel result = new ResultModel(PhoneNumberResultConstants.FAILED_RESULT.getResult(), String.valueOf(HttpStatus.NOT_FOUND.value()), PhoneNumberResultConstants.NOT_FOUND_PHONE_NUMBER_MESSAGE.getResult());
+        return new ResponseEntity<>(new ResponseModel(result), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CandidateNotFoundException.class)
+    public ResponseEntity<ResponseModel> handleCandidateNotFoundException() {
+        ResultModel result = new ResultModel(PhoneNumberResultConstants.FAILED_RESULT.getResult(), String.valueOf(HttpStatus.NOT_FOUND.value()), PhoneNumberResultConstants.NOT_FOUND_CANDIDATE_MESSAGE.getResult());
         return new ResponseEntity<>(new ResponseModel(result), HttpStatus.NOT_FOUND);
     }
 

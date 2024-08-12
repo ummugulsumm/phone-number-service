@@ -1,6 +1,7 @@
 package com.phonenumber.service.impl;
 
 import com.phonenumber.constant.DeliveryTypeConstants;
+import com.phonenumber.exception.CandidateNotFoundException;
 import com.phonenumber.exception.PhoneNumberNotFoundException;
 import com.phonenumber.model.CandidateModel;
 import com.phonenumber.repository.CandidateRepository;
@@ -40,7 +41,7 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public CandidateModel addDelivery(String candidateId, String deliveryType, String address) {
         CandidateModel candidate = candidateRepository.findById(candidateId)
-                .orElseThrow(PhoneNumberNotFoundException::new);
+                .orElseThrow(CandidateNotFoundException::new);
         candidate.setAddress(address);
         if(deliveryType.equals("HOME")) {
             candidate.setDeliveryType(DeliveryTypeConstants.HOME.getDeliveryType());
