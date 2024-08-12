@@ -1,9 +1,14 @@
 package com.phonenumber.service.impl;
 
+import com.phonenumber.constant.DeliveryTypeConstants;
+import com.phonenumber.exception.PhoneNumberNotFoundException;
 import com.phonenumber.model.CandidateModel;
 import com.phonenumber.repository.CandidateRepository;
 import com.phonenumber.service.CandidateService;
+import com.phonenumber.service.PhoneNumberService;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 
 @Service
@@ -11,8 +16,12 @@ public class CandidateServiceImpl implements CandidateService {
 
     private final CandidateRepository candidateRepository;
 
-    public CandidateServiceImpl(CandidateRepository candidateRepository) {
+    private final PhoneNumberService phoneNumberService;
+
+    public CandidateServiceImpl(CandidateRepository candidateRepository, PhoneNumberService phoneNumberService) {
         this.candidateRepository = candidateRepository;
+        this.phoneNumberService = phoneNumberService;
+
     }
 
     @Override
@@ -25,6 +34,21 @@ public class CandidateServiceImpl implements CandidateService {
         candidate.setTcNo(tcNo);
         candidate.setPhoneNumberId(phoneNumberId);
         candidate.setBirthdate(birthDate);
+        return candidateRepository.save(candidate);
+    }
+
+    @Override
+    public CandidateModel addDelivery(String candidateId, String deliveryType, String address) {
+        CandidateModel candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(PhoneNumberNotFoundException::new);
+        candidate.setAddress(address);
+        if(deliveryType.equals("HOME")) {
+            candidate.setDeliveryType(DeliveryTypeConstants.HOME.getDeliveryType());
+        } else if(deliveryType.equals("STORE")) {
+            candidate.setDeliveryType((DeliveryTypeConstants.STORE.getDeliveryType()));
+        }
+        candidate.setUpdateDate(new Date());
+        phoneNumberService.updateStatusSold(candidate.getPhoneNumberId());
         return candidateRepository.save(candidate);
     }
 }

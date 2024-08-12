@@ -24,7 +24,7 @@
         if (phoneNumberId) {
             try {
                 const response = await fetch( `/phone-numbers/confirm/${phoneNumberId}`, {
-                    method: 'POST',
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'
                     },

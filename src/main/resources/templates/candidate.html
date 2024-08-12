@@ -67,7 +67,9 @@ document.getElementById('candidateForm').addEventListener('submit', async functi
             });
 
             if (response.ok) {
-                window.location.href = `/phone-numbers/delivery/${phoneNumberId}`;
+                const data = await response.json();
+                const candidateId = data.candidateId;
+                window.location.href = `/phone-numbers/delivery/${candidateId}`;
             } else {
                 alert("Failed to hold the phone number.");
             }

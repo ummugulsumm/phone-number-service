@@ -2,7 +2,7 @@ package com.phonenumber.constant;
 
 public enum DeliveryTypeConstants {
 
-    ADDRESS("Address"),
+    HOME("Home"),
     STORE("Store");
 
     private final String deliveryType;

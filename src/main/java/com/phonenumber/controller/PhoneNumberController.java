@@ -46,9 +46,9 @@ public class PhoneNumberController {
     }
 
 
-    @PostMapping("/confirm/{phoneNumberId}")
+    @PatchMapping("/confirm/{phoneNumberId}")
     public ResponseEntity<Void> addContactPhoneNumber(@PathVariable String phoneNumberId, @RequestBody Map<String, String> requestBody) {
-        return  phoneNumberService.addContactPhoneNumber(phoneNumberId,requestBody.get("contactPhoneNumber"));
+        return  phoneNumberService.addContactPhoneNumber(phoneNumberId, requestBody.get("contactPhoneNumber"));
     }
 
     @PostMapping("/candidate/{phoneNumberId}")
@@ -60,6 +60,13 @@ public class PhoneNumberController {
         String tcNo = request.get("tcNo");
         String birthDate = request.get("birthDate");
         return new ResponseEntity<>(candidateService.createCandidate(phoneNumberId, firstName, lastName, fatherName, motherName, tcNo, birthDate), CREATED);
+    }
+
+    @PatchMapping("/delivery/{candidateId}")
+    public ResponseEntity<CandidateModel> addDelivery(@PathVariable String candidateId, @RequestBody Map<String, String> request) {
+        String deliveryType = request.get("deliveryType");
+        String address = request.get("address");
+        return new ResponseEntity<>(candidateService.addDelivery(candidateId, deliveryType, address), CREATED);
     }
 
     @PostMapping
