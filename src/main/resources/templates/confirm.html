@@ -34,7 +34,9 @@
                 if (response.ok) {
                     window.location.href = `/phone-numbers/candidate/${phoneNumberId}`;
                 } else {
-                    alert("Failed to hold the phone number.");
+                    const errorData = await response.json();
+                    const errorMessage = errorData.result.resultDesc;
+                    alert(errorMessage);
                 }
             } catch (error) {
                 alert("An error occurred: " + error.message);

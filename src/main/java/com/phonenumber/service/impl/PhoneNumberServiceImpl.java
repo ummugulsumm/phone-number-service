@@ -2,6 +2,7 @@ package com.phonenumber.service.impl;
 
 import com.phonenumber.constant.PhoneNumberResultConstants;
 import com.phonenumber.constant.PhoneNumberStatusConstants;
+import com.phonenumber.exception.PhoneNumberLimitExceededException;
 import com.phonenumber.exception.PhoneNumberNotFoundException;
 import com.phonenumber.model.PhoneNumberModel;
 import com.phonenumber.model.ResponseModel;
@@ -97,13 +98,27 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
 
     @Override
     public ResponseEntity<Void> addContactPhoneNumber(String phoneNumberId, String contactPhoneNumber) {
+
         PhoneNumberModel phoneNumber = phoneNumberRepository.findById(phoneNumberId)
                 .orElseThrow(PhoneNumberNotFoundException::new);
-        phoneNumber.setContactPhoneNumber(contactPhoneNumber);
-        phoneNumber.setStatus(PhoneNumberStatusConstants.HOLD.getStatus());
-        phoneNumber.setUpdateDate(new Date());
-        phoneNumberRepository.save(phoneNumber);
-        return new ResponseEntity<>(OK);
+
+        String type = phoneNumber.getSpecialPhoneNumberType();
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("contactPhoneNumber").is(contactPhoneNumber)
+                .and("specialPhoneNumberType").is(type));
+
+        int count = (int) mongoTemplate.count(query, PhoneNumberModel.class);
+
+        if(count < 3) {
+            phoneNumber.setContactPhoneNumber(contactPhoneNumber);
+            phoneNumber.setStatus(PhoneNumberStatusConstants.HOLD.getStatus());
+            phoneNumber.setUpdateDate(new Date());
+            phoneNumberRepository.save(phoneNumber);
+            return new ResponseEntity<>(OK);
+        } else {
+            throw new PhoneNumberLimitExceededException();
+        }
     }
 
 

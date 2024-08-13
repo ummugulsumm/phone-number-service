@@ -11,7 +11,9 @@ public enum PhoneNumberResultConstants {
     AUTHENTICATION_FAILED_MESSAGE("Authentication failed!"),
     FORBIDDEN_MESSAGE("Access is forbidden!"),
 
-    INTERNAL_SERVER_MESSAGE("Internal server error!");
+    INTERNAL_SERVER_MESSAGE("Internal server error!"),
+
+    LIMIT_EXCEEDED("You have exceeded the maximum number of allowed phone numbers.");
 
     private final String result;
 

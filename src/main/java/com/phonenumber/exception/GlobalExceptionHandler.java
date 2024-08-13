@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ResponseModel(result), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(PhoneNumberLimitExceededException.class)
+    public ResponseEntity<ResponseModel> handlePhoneNumberLimitExceededException() {
+        ResultModel result = new ResultModel(PhoneNumberResultConstants.FAILED_RESULT.getResult(), String.valueOf(HttpStatus.BAD_REQUEST.value()), PhoneNumberResultConstants.LIMIT_EXCEEDED.getResult());
+        return new ResponseEntity<>(new ResponseModel(result), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(CandidateNotFoundException.class)
     public ResponseEntity<ResponseModel> handleCandidateNotFoundException() {
         ResultModel result = new ResultModel(PhoneNumberResultConstants.FAILED_RESULT.getResult(), String.valueOf(HttpStatus.NOT_FOUND.value()), PhoneNumberResultConstants.NOT_FOUND_CANDIDATE_MESSAGE.getResult());
