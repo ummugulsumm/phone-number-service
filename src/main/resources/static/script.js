@@ -1,13 +1,13 @@
 
 
-function formatPhoneNumber(phoneNumber) {
-            const cleaned = ('' + phoneNumber).replace(/\D/g, '');
-            const match = cleaned.match(/^(\d{3})(\d{3})(\d{2})(\d{2})$/);
-            if (match) {
-                return `(${match[1]}) ${match[2]} ${match[3]} ${match[4]}`;
-            }
-            return phoneNumber;
+    function formatPhoneNumber(phoneNumber) {
+        const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+        const match = cleaned.match(/^(\d{3})(\d{3})(\d{2})(\d{2})$/);
+        if (match) {
+           return `(${match[1]}) ${match[2]} ${match[3]} ${match[4]}`;
         }
+        return phoneNumber;
+    }
 
     let selectedPhoneNumberId = null;
         async function searchPhoneNumbers(event) {
@@ -29,6 +29,15 @@ function formatPhoneNumber(phoneNumber) {
                 data.phoneNumbers.forEach(phoneNumber => {
                     const li = document.createElement("li");
                     li.textContent = formatPhoneNumber(phoneNumber.phoneNumber);
+                    li.classList.add(phoneNumber.specialPhoneNumberType.toLowerCase());
+
+                    if (phoneNumber.specialPhoneNumberPrice > 0) {
+                       const priceTag = document.createElement("span");
+                       priceTag.classList.add("price-tag");
+                       priceTag.textContent = `${phoneNumber.specialPhoneNumberPrice} TL`;
+                       li.appendChild(priceTag);
+                    }
+
                     li.addEventListener('click', function() {
                         results.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
                         this.classList.toggle('selected');

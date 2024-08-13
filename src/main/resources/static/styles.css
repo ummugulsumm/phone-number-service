@@ -97,10 +97,21 @@ li {
     cursor: pointer;
     width: 45%;
     text-align: center;
+    position: relative;
 
 }
 
 .selected {
     background-color: rgba(0, 0, 0, 0.1);
     border: 2px solid #ae9cff;
+}
+
+.gold .price-tag { color: #ffd700; } /* Gold */
+.silver .price-tag { color: #c0c0c0; } /* Silver */
+.bronze .price-tag { color: #cd7f32; } /* Bronze */
+.price-tag {
+    font-size: 0.8em;
+    float: right;
+    font-weight: bold;
+    }
 }

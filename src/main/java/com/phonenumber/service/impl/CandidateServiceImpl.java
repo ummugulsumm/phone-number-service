@@ -2,7 +2,6 @@ package com.phonenumber.service.impl;
 
 import com.phonenumber.constant.DeliveryTypeConstants;
 import com.phonenumber.exception.CandidateNotFoundException;
-import com.phonenumber.exception.PhoneNumberNotFoundException;
 import com.phonenumber.model.CandidateModel;
 import com.phonenumber.repository.CandidateRepository;
 import com.phonenumber.service.CandidateService;
