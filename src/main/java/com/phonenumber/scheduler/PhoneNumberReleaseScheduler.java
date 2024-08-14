@@ -31,6 +31,7 @@ public class PhoneNumberReleaseScheduler {
 
         holdPhoneNumbers.forEach(phoneNumber -> {
             phoneNumber.setStatus(PhoneNumberStatusConstants.AVAILABLE.getStatus());
+            phoneNumber.setContactPhoneNumber("");
             phoneNumber.setUpdateDate(new Date());
             phoneNumberRepository.save(phoneNumber);
         });
