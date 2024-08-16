@@ -2,6 +2,7 @@ package com.phonenumber.service.impl;
 
 import com.phonenumber.constant.PhoneNumberResultConstants;
 import com.phonenumber.constant.PhoneNumberStatusConstants;
+import com.phonenumber.constant.SmsMessageConstants;
 import com.phonenumber.exception.PhoneNumberLimitExceededException;
 import com.phonenumber.exception.PhoneNumberNotFoundException;
 import com.phonenumber.model.PhoneNumberModel;
@@ -9,6 +10,7 @@ import com.phonenumber.model.ResponseModel;
 import com.phonenumber.model.ResultModel;
 import com.phonenumber.repository.PhoneNumberRepository;
 import com.phonenumber.service.PhoneNumberService;
+import com.phonenumber.service.SmsService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -31,6 +33,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     private final PhoneNumberRepository phoneNumberRepository;
 
     private final MongoTemplate mongoTemplate;
+    private final SmsService smsService;
 
     @Override
     public ResponseModel getAvailablePhoneNumbers() {
@@ -94,6 +97,8 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         phoneNumber.setStatus(PhoneNumberStatusConstants.SOLD.getStatus());
         phoneNumber.setUpdateDate(new Date());
         phoneNumberRepository.save(phoneNumber);
+        smsService.sendSms(phoneNumber.getPhoneNumber(), phoneNumber.getContactPhoneNumber(), SmsMessageConstants.SOLD.getMessage(phoneNumber.getPhoneNumber()));
+
     }
 
     @Override
@@ -115,6 +120,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
             phoneNumber.setStatus(PhoneNumberStatusConstants.HOLD.getStatus());
             phoneNumber.setUpdateDate(new Date());
             phoneNumberRepository.save(phoneNumber);
+            smsService.sendSms(phoneNumber.getPhoneNumber(), phoneNumber.getContactPhoneNumber(), SmsMessageConstants.HOLD.getMessage(phoneNumber.getPhoneNumber()));
             return new ResponseEntity<>(OK);
         } else {
             throw new PhoneNumberLimitExceededException();
