@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpStatus.*;
@@ -45,6 +46,10 @@ public class PhoneNumberController {
         return phoneNumberService.getAvailablePhoneNumbersByDigit(digit);
     }
 
+    @PostMapping("/ai-help")
+    public String getAiHelp(@RequestBody Map<String, List<Object>> requestBody) {
+        return phoneNumberService.getAiHelp(requestBody.get("phoneNumbers"));
+    }
 
     @PatchMapping("/confirm/{phoneNumberId}")
     public ResponseEntity<Void> addContactPhoneNumber(@PathVariable String phoneNumberId, @RequestBody Map<String, String> requestBody) {
