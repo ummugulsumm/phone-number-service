@@ -9,9 +9,12 @@ import com.phonenumber.model.PhoneNumberModel;
 import com.phonenumber.model.ResponseModel;
 import com.phonenumber.model.ResultModel;
 import com.phonenumber.repository.PhoneNumberRepository;
+import com.phonenumber.service.AiService;
 import com.phonenumber.service.PhoneNumberService;
 import com.phonenumber.service.SmsService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -28,12 +31,16 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PhoneNumberServiceImpl implements PhoneNumberService {
 
     private final PhoneNumberRepository phoneNumberRepository;
 
     private final MongoTemplate mongoTemplate;
     private final SmsService smsService;
+
+    @Autowired
+    private final AiService aiService;
 
     @Override
     public ResponseModel getAvailablePhoneNumbers() {
@@ -125,6 +132,15 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         } else {
             throw new PhoneNumberLimitExceededException();
         }
+    }
+
+    @Override
+    public String getAiHelp(List<Object> phoneNumbers) {
+        StringBuilder prompt = new StringBuilder("I want to change my phone number. Which of these options do you think is the best one to choose? Decide by looking at both the price and the pattern of the number.\n");
+        for (Object number : phoneNumbers) {
+            prompt.append("\n- ").append(number);
+        }
+        return aiService.chatGemini(prompt.toString());
     }
 
 

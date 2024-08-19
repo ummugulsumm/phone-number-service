@@ -21,7 +21,6 @@ body {
     padding: 50px 50px;
     border-radius: 10px;
     box-shadow: 0 20px 40px rgba(38, 33, 61, 0.2);
-
 }
 
 p {
@@ -98,7 +97,6 @@ li {
     width: 45%;
     text-align: center;
     position: relative;
-
 }
 
 .selected {
@@ -113,5 +111,60 @@ li {
     font-size: 0.8em;
     float: right;
     font-weight: bold;
-    }
+}
+
+#ai-help-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+#ai-help-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#ai-help-button:hover {
+    background-color: #45a049;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

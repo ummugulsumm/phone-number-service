@@ -5,6 +5,8 @@ import com.phonenumber.model.ResponseModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface PhoneNumberService {
     ResponseModel getAvailablePhoneNumbers();
 
@@ -22,4 +24,6 @@ public interface PhoneNumberService {
     void updateStatusSold(String phoneNumberId);
 
     ResponseEntity<Void> addContactPhoneNumber(String phoneNumberId, String contactPhoneNumber);
+
+    String getAiHelp(List<Object> phoneNumbers);
 }
