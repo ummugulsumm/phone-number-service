@@ -94,12 +94,14 @@ function displayAiResponse(textResponse) {
     aiResponse.innerHTML = parseMarkdown(textResponse);
 
     const recommendedNumber = phoneNumbers.find(p => textResponse.includes(p.phoneNumber)).phoneNumber;
-    const results = document.getElementById("results");
-    results.querySelectorAll('li').forEach(li => {
-        if (li.textContent.includes(formatPhoneNumber(recommendedNumber))) {
-            li.style.backgroundColor = "lightblue";
-        }
-    });
+    if (recommendedNumber) {
+            const results = document.getElementById("results");
+            results.querySelectorAll('li').forEach(li => {
+                if (li.textContent.includes(formatPhoneNumber(recommendedNumber))) {
+                    li.style.backgroundColor = "lightblue"; // Önerilen numarayı vurgulamak için
+                }
+            });
+    }
 }
 
 function parseMarkdown(text) {
