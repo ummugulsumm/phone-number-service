@@ -1,5 +1,6 @@
 package com.phonenumber.model;
 
+import com.phonenumber.dto.PhoneNumberDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 public class ResponseModel {
     private ResultModel result;
-    private List<PhoneNumberModel> phoneNumbers;
+    private List<PhoneNumberDto> phoneNumbers;
 
     public ResponseModel(ResultModel result) {
         this.result = result;

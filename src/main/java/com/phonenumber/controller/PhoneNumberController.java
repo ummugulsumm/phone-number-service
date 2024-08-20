@@ -1,7 +1,8 @@
 package com.phonenumber.controller;
 
-import com.phonenumber.model.CandidateModel;
-import com.phonenumber.model.PhoneNumberModel;
+import com.phonenumber.dto.CandidateDto;
+import com.phonenumber.dto.CandidateRequestDto;
+import com.phonenumber.dto.PhoneNumberDto;
 import com.phonenumber.model.ResponseModel;
 import com.phonenumber.service.CandidateService;
 import com.phonenumber.service.PhoneNumberService;
@@ -57,25 +58,19 @@ public class PhoneNumberController {
     }
 
     @PostMapping("/candidate/{phoneNumberId}")
-    public ResponseEntity<CandidateModel> createCandidate(@PathVariable String phoneNumberId, @RequestBody Map<String, String> request) {
-        String firstName = request.get("firstName");
-        String lastName = request.get("lastName");
-        String motherName = request.get("motherName");
-        String fatherName = request.get("fatherName");
-        String tcNo = request.get("tcNo");
-        String birthDate = request.get("birthDate");
-        return new ResponseEntity<>(candidateService.createCandidate(phoneNumberId, firstName, lastName, fatherName, motherName, tcNo, birthDate), CREATED);
+    public ResponseEntity<CandidateDto> createCandidate(@PathVariable String phoneNumberId, @RequestBody CandidateRequestDto request) {
+        return new ResponseEntity<>(candidateService.createCandidate(phoneNumberId, request), CREATED);
     }
 
     @PatchMapping("/delivery/{candidateId}")
-    public ResponseEntity<CandidateModel> addDelivery(@PathVariable String candidateId, @RequestBody Map<String, String> request) {
+    public ResponseEntity<CandidateDto> addDelivery(@PathVariable String candidateId, @RequestBody Map<String, String> request) {
         String deliveryType = request.get("deliveryType");
         String address = request.get("address");
         return new ResponseEntity<>(candidateService.addDelivery(candidateId, deliveryType, address), CREATED);
     }
 
     @PostMapping
-    public ResponseEntity<PhoneNumberModel> createPhoneNumber(@RequestBody PhoneNumberModel newPhoneNumber) {
+    public ResponseEntity<PhoneNumberDto> createPhoneNumber(@RequestBody PhoneNumberDto newPhoneNumber) {
         return new ResponseEntity<>(phoneNumberService.createPhoneNumber(newPhoneNumber), CREATED);
     }
 
