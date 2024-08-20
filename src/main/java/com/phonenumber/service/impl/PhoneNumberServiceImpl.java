@@ -3,6 +3,7 @@ package com.phonenumber.service.impl;
 import com.phonenumber.constant.PhoneNumberResultConstants;
 import com.phonenumber.constant.PhoneNumberStatusConstants;
 import com.phonenumber.constant.SmsMessageConstants;
+import com.phonenumber.dto.PhoneNumberDto;
 import com.phonenumber.exception.PhoneNumberLimitExceededException;
 import com.phonenumber.exception.PhoneNumberNotFoundException;
 import com.phonenumber.model.PhoneNumberModel;
@@ -14,6 +15,7 @@ import com.phonenumber.service.PhoneNumberService;
 import com.phonenumber.service.SmsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -22,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     private final MongoTemplate mongoTemplate;
     private final SmsService smsService;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
     private final AiService aiService;
 
@@ -49,7 +52,9 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
                 String.valueOf(HttpStatus.OK.value()),
                 PhoneNumberResultConstants.SUCCESS_MESSAGE.getResult()
         );
-        return new ResponseModel(result, phoneNumberRepository.findAll());
+        List<PhoneNumberModel> phoneNumbers = phoneNumberRepository.findAll();
+        List<PhoneNumberDto> dtos = phoneNumbers.stream().map(phoneNumber -> modelMapper.map(phoneNumber, PhoneNumberDto.class)).toList();
+        return new ResponseModel(result, dtos);
     }
 
     @Override
@@ -68,7 +73,9 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
                 PhoneNumberResultConstants.SUCCESS_MESSAGE.getResult()
         );
 
-        return new ResponseModel(result, phoneNumbers);
+
+        List<PhoneNumberDto> dtos = phoneNumbers.stream().map(phoneNumber -> modelMapper.map(phoneNumber, PhoneNumberDto.class)).toList();
+        return new ResponseModel(result, dtos);
 
     }
 
@@ -88,7 +95,9 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
                         String.valueOf(HttpStatus.OK.value()),
                         PhoneNumberResultConstants.SUCCESS_MESSAGE.getResult()
                 );
-                return new ResponseModel(result, phoneNumbersByDigit);
+
+                List<PhoneNumberDto> dtos = phoneNumbersByDigit.stream().map(phoneNumber -> modelMapper.map(phoneNumber, PhoneNumberDto.class)).toList();
+                return new ResponseModel(result, dtos);
             }
             digit = digit.substring(1);
         }
@@ -145,13 +154,9 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
 
 
     @Override
-    public PhoneNumberModel createPhoneNumber(PhoneNumberModel newPhoneNumber) {
-        return phoneNumberRepository.save(newPhoneNumber);
-    }
-
-    @Override
-    public void deletePhoneNumber(String id) {
-        phoneNumberRepository.deleteById(id);
+    public PhoneNumberDto createPhoneNumber(PhoneNumberDto newPhoneNumber) {
+        PhoneNumberModel phoneNumber = modelMapper.map(newPhoneNumber, PhoneNumberModel.class);
+        return modelMapper.map(phoneNumberRepository.save(phoneNumber), PhoneNumberDto.class);
     }
 
     @Override

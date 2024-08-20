@@ -26,6 +26,6 @@ public class PhoneNumberModel {
 
     private int specialPhoneNumberPrice;
 
-    private String contactPhoneNumber;
+    private String contactPhoneNumber = "";
 
 }

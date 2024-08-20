@@ -1,11 +1,14 @@
 package com.phonenumber.service.impl;
 
 import com.phonenumber.constant.DeliveryTypeConstants;
+import com.phonenumber.dto.CandidateDto;
+import com.phonenumber.dto.CandidateRequestDto;
 import com.phonenumber.exception.CandidateNotFoundException;
 import com.phonenumber.model.CandidateModel;
 import com.phonenumber.repository.CandidateRepository;
 import com.phonenumber.service.CandidateService;
 import com.phonenumber.service.PhoneNumberService;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,27 +21,24 @@ public class CandidateServiceImpl implements CandidateService {
 
     private final PhoneNumberService phoneNumberService;
 
-    public CandidateServiceImpl(CandidateRepository candidateRepository, PhoneNumberService phoneNumberService) {
+    private final ModelMapper modelMapper;
+
+    public CandidateServiceImpl(CandidateRepository candidateRepository, PhoneNumberService phoneNumberService, ModelMapper modelMapper) {
         this.candidateRepository = candidateRepository;
         this.phoneNumberService = phoneNumberService;
+        this.modelMapper = modelMapper;
 
     }
 
     @Override
-    public CandidateModel createCandidate(String phoneNumberId, String firstName, String lastName, String motherName, String fatherName, String tcNo, String birthDate) {
-        CandidateModel candidate = new CandidateModel();
-        candidate.setFirstName(firstName);
-        candidate.setLastName(lastName);
-        candidate.setMotherName(motherName);
-        candidate.setFatherName(fatherName);
-        candidate.setTcNo(tcNo);
-        candidate.setPhoneNumberId(phoneNumberId);
-        candidate.setBirthdate(birthDate);
-        return candidateRepository.save(candidate);
+    public CandidateDto createCandidate(String phoneNumberId, CandidateRequestDto request) {
+        CandidateModel candidate = modelMapper.map(request, CandidateModel.class);
+                       candidate.setPhoneNumberId(phoneNumberId);
+        return modelMapper.map(candidateRepository.save(candidate), CandidateDto.class);
     }
 
     @Override
-    public CandidateModel addDelivery(String candidateId, String deliveryType, String address) {
+    public CandidateDto addDelivery(String candidateId, String deliveryType, String address) {
         CandidateModel candidate = candidateRepository.findById(candidateId)
                 .orElseThrow(CandidateNotFoundException::new);
         candidate.setAddress(address);
@@ -49,6 +49,6 @@ public class CandidateServiceImpl implements CandidateService {
         }
         candidate.setUpdateDate(new Date());
         phoneNumberService.updateStatusSold(candidate.getPhoneNumberId());
-        return candidateRepository.save(candidate);
+        return modelMapper.map(candidateRepository.save(candidate), CandidateDto.class);
     }
 }

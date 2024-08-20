@@ -1,11 +1,12 @@
 package com.phonenumber.service;
 
-import com.phonenumber.model.CandidateModel;
+import com.phonenumber.dto.CandidateDto;
+import com.phonenumber.dto.CandidateRequestDto;
 
 
 
 public interface CandidateService {
-    CandidateModel createCandidate(String phoneNumberId, String firstName, String lastName, String motherName, String fatherName, String tcNo, String birthDate);
+    CandidateDto createCandidate(String phoneNumberId, CandidateRequestDto request);
 
-    CandidateModel addDelivery(String candidateId, String deliveryType, String address);
+    CandidateDto addDelivery(String candidateId, String deliveryType, String address);
 }
