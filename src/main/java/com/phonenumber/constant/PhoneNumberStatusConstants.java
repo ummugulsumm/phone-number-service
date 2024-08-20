@@ -6,7 +6,9 @@ public enum PhoneNumberStatusConstants {
 
     HOLD("Hold"),
 
-    SOLD("Sold");
+    SOLD("Sold"),
+
+    SOLD_ACTIVE("Sold_active");
 
     private final String status;
 

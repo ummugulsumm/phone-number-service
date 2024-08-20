@@ -152,6 +152,19 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         return aiService.chatGemini(prompt.toString());
     }
 
+    @Override
+    public PhoneNumberDto updateStatusSoldActive(String phoneNumberId) {
+        PhoneNumberModel phoneNumber = phoneNumberRepository.findById(phoneNumberId)
+                .orElseThrow(PhoneNumberNotFoundException::new);
+        if(phoneNumber.getStatus().equals(PhoneNumberStatusConstants.SOLD.getStatus())) {
+            phoneNumber.setStatus(PhoneNumberStatusConstants.SOLD_ACTIVE.getStatus());
+            smsService.sendSms(phoneNumber.getPhoneNumber(), phoneNumber.getContactPhoneNumber(), SmsMessageConstants.DELIVERED.getMessage(phoneNumber.getPhoneNumber()));
+            return modelMapper.map(phoneNumberRepository.save(phoneNumber), PhoneNumberDto.class);
+        } else {
+            throw new PhoneNumberNotFoundException();
+        }
+    }
+
 
     @Override
     public PhoneNumberDto createPhoneNumber(PhoneNumberDto newPhoneNumber) {

@@ -4,8 +4,9 @@ public enum SmsMessageConstants {
 
     HOLD("Your number %s has been reserved as per your request."),
     SOLD("Your order for %s number has been successfully completed."),
-    RELEASE("Your reservation for the number %s has been canceled due to inactivity."),
-    DELIVERED("You can start using the number %s now.");
+    RELEASE_HOLD("Your reservation for number %s has been canceled due to inactivity."),
+    DELIVERED("You can start using number %s now."),
+    RELEASE_SOLD("Your order for number %s has been canceled as it has not been received");
 
     private final String message;
 
