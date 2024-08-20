@@ -29,13 +29,16 @@ public class PhoneNumberReleaseScheduler {
     @Value("${scheduler.hold.duration}")
     private long holdDuration;
 
+    @Value("${scheduler.sold.duration}")
+    private long soldDuration;
+
     @Scheduled(fixedRateString = "${hold.scheduler.job.frequency}")
-    public void releasePhoneNumbers() {
+    public void releasePhoneNumbersOfHold() {
         Date cutoffTime = new Date(System.currentTimeMillis() - holdDuration);
         List<PhoneNumberModel> holdPhoneNumbers = phoneNumberRepository.findByStatusAndUpdateDateBefore(PhoneNumberStatusConstants.HOLD.getStatus(), cutoffTime);
 
         holdPhoneNumbers.forEach(phoneNumber -> {
-            smsService.sendSms(phoneNumber.getPhoneNumber(), phoneNumber.getContactPhoneNumber(), SmsMessageConstants.RELEASE.getMessage(phoneNumber.getPhoneNumber()));
+            smsService.sendSms(phoneNumber.getPhoneNumber(), phoneNumber.getContactPhoneNumber(), SmsMessageConstants.RELEASE_HOLD.getMessage(phoneNumber.getPhoneNumber()));
             phoneNumber.setStatus(PhoneNumberStatusConstants.AVAILABLE.getStatus());
             phoneNumber.setContactPhoneNumber("");
             phoneNumber.setUpdateDate(new Date());
@@ -44,7 +47,26 @@ public class PhoneNumberReleaseScheduler {
         });
 
 
-        log.info("Released phone numbers:" + holdPhoneNumbers.size());
+        log.info("Released phone numbers:(hold)" + holdPhoneNumbers.size());
+
+    }
+
+    @Scheduled(fixedRateString = "${sold.scheduler.job.frequency}")
+    public void releasePhoneNumbersOfSold() {
+        Date cutoffTime = new Date(System.currentTimeMillis() - soldDuration);
+        List<PhoneNumberModel> soldPhoneNumbers = phoneNumberRepository.findByStatusAndUpdateDateBefore(PhoneNumberStatusConstants.SOLD.getStatus(), cutoffTime);
+
+        soldPhoneNumbers.forEach(phoneNumber -> {
+            smsService.sendSms(phoneNumber.getPhoneNumber(), phoneNumber.getContactPhoneNumber(), SmsMessageConstants.RELEASE_SOLD.getMessage(phoneNumber.getPhoneNumber()));
+            phoneNumber.setStatus(PhoneNumberStatusConstants.AVAILABLE.getStatus());
+            phoneNumber.setContactPhoneNumber("");
+            phoneNumber.setUpdateDate(new Date());
+            phoneNumberRepository.save(phoneNumber);
+
+        });
+
+
+        log.info("Released phone numbers(sold):" + soldPhoneNumbers.size());
 
     }
 

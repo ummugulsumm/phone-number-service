@@ -62,6 +62,11 @@ public class PhoneNumberController {
         return new ResponseEntity<>(candidateService.createCandidate(phoneNumberId, request), CREATED);
     }
 
+    @PatchMapping("/sold-active/{phoneNumberId}")
+    public PhoneNumberDto soldActive(@PathVariable String phoneNumberId) {
+        return phoneNumberService.updateStatusSoldActive(phoneNumberId);
+    }
+
     @PatchMapping("/delivery/{candidateId}")
     public ResponseEntity<CandidateDto> addDelivery(@PathVariable String candidateId, @RequestBody Map<String, String> request) {
         String deliveryType = request.get("deliveryType");

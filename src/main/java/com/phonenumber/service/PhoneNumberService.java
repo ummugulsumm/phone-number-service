@@ -24,4 +24,6 @@ public interface PhoneNumberService {
     ResponseEntity<Void> addContactPhoneNumber(String phoneNumberId, String contactPhoneNumber);
 
     String getAiHelp(List<Object> phoneNumbers);
+
+    PhoneNumberDto updateStatusSoldActive(String phoneNumberId);
 }
